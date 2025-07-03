@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gérer les Inscriptions</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --emsi-green: #006633;
+      --emsi-green-light: #e8f5e9;
+    }
+
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .navbar {
+      background-color: var(--emsi-green);
+    }
+
+    .navbar .nav-link,
+    .navbar .navbar-brand {
+      color: #fff !important;
+      font-weight: 500;
+    }
+
+    .navbar .btn {
+      border-color: #fff;
+      color: #fff;
+    }
+
+    .navbar .btn:hover {
+      background: #fff;
+      color: var(--emsi-green);
+    }
+
+    h2 {
+      color: var(--emsi-green);
+      font-weight: 700;
+    }
+
+    .table thead {
+      background-color: var(--emsi-green);
+      color: #fff;
+    }
+
+    .btn-success {
+      background-color: var(--emsi-green);
+      border: none;
+    }
+
+    .btn-success:hover {
+      background-color: #004d29;
+    }
+
+    .btn-danger {
+      background-color: #c82333;
+      border: none;
+    }
+
+    .btn-danger:hover {
+      background-color: #a71d2a;
+    }
+
+    .alert-danger {
+      border-color: #c82333;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ✅ Navbar EMSI -->
+<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="/admin/dashboard">
+      <i class="fas fa-user-shield"></i> EMSI-ONE
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarAdmin" aria-controls="navbarAdmin" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarAdmin">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/inscriptions">Inscriptions</a>
+        </li>
+        <li class="nav-item">
+          <form action="/logout" method="post" class="ms-2 mb-0">
+            <button type="submit" class="btn btn-outline-light btn-sm">
+              <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h2 class="mb-4 text-center">Inscriptions en attente</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Motif</th>
+      <th>Utilisateur (Email)</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="inscription : ${inscriptions}">
+      <td th:text="${inscription.id}">ID</td>
+      <td th:text="${inscription.nom ?: 'N/A'}">Nom</td>
+      <td th:text="${inscription.prenom ?: 'N/A'}">Prénom</td>
+      <td th:text="${inscription.motif ?: 'N/A'}">Motif</td>
+      <td th:text="${inscription.user != null ? inscription.user.email : 'Utilisateur inconnu'}">Email</td>
+      <td>
+        <form th:action="@{'/admin/inscriptions/approve/' + ${inscription.id}}" method="post" style="display:inline;">
+          <button class="btn btn-success btn-sm">Approuver</button>
+        </form>
+        <form th:action="@{'/admin/inscriptions/reject/' + ${inscription.id}}" method="post" style="display:inline;">
+          <button class="btn btn-danger btn-sm">Rejeter</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

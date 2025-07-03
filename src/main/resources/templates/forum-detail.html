@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${forum.titre}">Détail du Forum</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --emsi-green: #006633;
+      --emsi-green-light: #e6f2e6;
+    }
+    .navbar {
+      background-color: var(--emsi-green);
+    }
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+      color: #fff !important;
+      font-weight: 600;
+    }
+    .forum-post {
+      border-left: 4px solid var(--emsi-green);
+      padding-left: 1rem;
+      margin-bottom: 2rem;
+    }
+    .reply {
+      margin-left: 3rem;
+      border-left: 2px solid #dee2e6;
+      padding-left: 1rem;
+      margin-top: 1.5rem;
+    }
+    .translate-btn {
+      color: var(--emsi-green);
+      cursor: pointer;
+    }
+    .action-btn {
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ✅ Navbar EMSI -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/etudiant/dashboard">
+      <img src="/images/im111.png" alt="Logo EMSI" style="height: 40px;" class="me-2">
+      EMSI-One
+    </a>
+    <a href="/etudiant/dashboard" class="btn btn-outline-light btn-sm ms-auto">
+      <i class="fas fa-arrow-left"></i> Retour Dashboard
+    </a>
+  </div>
+</nav>
+
+<div class="container py-4">
+  <!-- ✅ Post principal -->
+  <div class="forum-post">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-user-circle me-2"></i>
+        <div>
+          <span class="fw-bold" th:text="${forum.auteur.fullName}">Auteur inconnu</span>
+          <span class="text-muted ms-2"
+                th:text="${#temporals.format(forum.date, 'dd MMM yyyy HH:mm')}">Date</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 th:text="${forum.titre}">Titre du forum</h3>
+    <p class="mb-3 fs-5" th:text="${forum.contenu}">Contenu du forum</p>
+
+    <!-- ✅ Actions -->
+    <div class="d-flex gap-3">
+      <form th:action="@{'/forums/like/' + ${forum.id}}" method="post" class="d-inline">
+        <button type="submit" class="btn btn-sm btn-outline-primary action-btn">
+          <i class="far fa-thumbs-up"></i>
+          ❤️ J'aime (<span th:text="${forum.likeCount}">0</span>)
+        </button>
+      </form>
+      <button class="btn btn-sm btn-outline-secondary translate-btn action-btn">
+        <i class="fas fa-language"></i> Traduire
+      </button>
+      <span class="btn btn-sm btn-outline-success action-btn">
+        <i class="far fa-comment"></i>
+        <span th:text="${forum.reponses.size()}">0</span> réponses
+      </span>
+    </div>
+  </div>
+
+  <!-- ✅ Liste des réponses -->
+  <h5>Réponses</h5>
+  <div th:each="rep : ${forum.reponses}" class="reply">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-user-circle me-2"></i>
+        <div>
+          <span class="fw-bold" th:text="${rep.auteur.fullName}">Auteur réponse</span>
+          <span class="text-muted ms-2"
+                th:text="${#temporals.format(rep.date, 'dd MMM yyyy HH:mm')}">Date</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="mb-3" th:text="${rep.contenu}">Contenu réponse</p>
+
+    <div class="d-flex gap-3">
+      <button class="btn btn-sm btn-outline-primary action-btn">
+        <i class="far fa-thumbs-up"></i> J'aime
+      </button>
+      <button class="btn btn-sm btn-outline-secondary translate-btn action-btn">
+        <i class="fas fa-language"></i> Traduire
+      </button>
+    </div>
+  </div>
+
+  <!-- ✅ Formulaire réponse -->
+  <div class="mt-4 p-3 bg-light rounded">
+    <h5 class="mb-3">Ajouter une réponse</h5>
+    <form th:action="@{'/forums/repondre/' + ${forum.id}}" method="post">
+      <div class="mb-3">
+        <textarea class="form-control" name="reponse" rows="3" required
+                  placeholder="Votre réponse..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-success">
+        <i class="fas fa-paper-plane"></i> Envoyer
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ✅ Script traduction -->
+<script>
+  document.querySelectorAll('.translate-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const textElement = this.closest('.forum-post, .reply').querySelector('p');
+      const originalText = textElement.textContent.trim();
+
+      fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: originalText })
+      })
+              .then(response => response.json())
+              .then(data => {
+                console.log('Réponse API:', data);
+                if (data.translatedText && data.translatedText.trim() !== '') {
+                  textElement.textContent = data.translatedText;
+                  this.disabled = true;
+                } else {
+                  alert("La traduction a échoué. Texte original conservé.");
+                  textElement.textContent = originalText; // Remets l'original si vide
+                }
+              })
+              .catch(error => {
+                console.error('Erreur de traduction:', error);
+                alert("Erreur lors de la traduction. Texte original conservé.");
+                textElement.textContent = originalText; // Sécurité
+              });
+    });
+  });
+</script>
+</body>
+</html>

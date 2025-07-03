@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Laisser un commentaire</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h2 class="mb-4 text-success">Ajouter un commentaire</h2>
+
+    <form th:action="@{/etudiant/commentaire}" method="post">
+        <textarea name="contenu"
+                  class="form-control mb-3"
+                  rows="4"
+                  placeholder="Écrivez votre commentaire..." required></textarea>
+        <button type="submit" class="btn btn-success">Envoyer</button>
+    </form>
+</div>
+</body>
+</html>

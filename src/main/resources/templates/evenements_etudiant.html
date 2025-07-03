@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Événements EMSI Rabat</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --emsivert: #2e7d32;
+      --emsivert-clair: #66bb6a;
+      --emsivert-pale: #e8f5e9;
+      --accent: #fdd835; /* Or doux pour dynamiser */
+      --gris-clair: #f9f9f9;
+    }
+
+    body {
+      background-color: var(--gris-clair);
+    }
+
+    .navbar {
+      background-color: var(--emsivert);
+    }
+
+    .navbar-brand, .nav-link, .navbar-text {
+      color: #ffffff !important;
+      font-weight: 500;
+    }
+
+    .navbar-brand:hover, .nav-link:hover {
+      color: var(--emsivert-clair) !important;
+    }
+
+    h1 {
+      color: var(--emsivert);
+      font-weight: 700;
+    }
+
+    .card {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--emsivert), var(--emsivert-clair));
+      color: white;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+
+    .badge-date {
+      background-color: var(--accent);
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    .btn-emsivert {
+      background-color: var(--emsivert);
+      color: white;
+      border-radius: 50px;
+      transition: all 0.3s;
+    }
+
+    .btn-emsivert:hover {
+      background-color: #1b5e20;
+      transform: scale(1.05);
+    }
+
+    .section-header {
+      background-color: var(--emsivert-pale);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ✅ NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/">Association EMSI Rabat</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Basculer la navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/etudiant/dashboard">Tableau de Bord</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/etudiant/formulaire">Remplir Formulaire</a>
+          <!-- Remplace '/etudiant/formulaire' par l'URL réelle de ton formulaire -->
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ✅ CONTENU -->
+<div class="container my-5">
+  <div class="section-header mb-4 text-center">
+    <h1>Nos Événements</h1>
+    <p class="mb-0">Participez et faites vivre la vie associative !</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div class="col" th:each="event : ${evenements}">
+      <div class="card h-100">
+
+        <!-- ✅ IMAGE D'ÉVÉNEMENT AVEC FALLBACK -->
+        <img th:if="${event.imageFilename != null}"
+             th:src="@{'/images/uploads/' + ${event.imageFilename}}"
+             class="card-img-top"
+             alt="Affiche de l'événement">
+
+        <img th:unless="${event.imageFilename != null}"
+             src="/images/uploads/default.jpg"
+             class="card-img-top"
+             alt="Affiche par défaut">
+
+        <!-- ✅ TITRE -->
+        <div class="card-header">
+          <h5 th:text="${event.titre}" class="mb-0"></h5>
+        </div>
+
+        <!-- ✅ CONTENU -->
+        <div class="card-body d-flex flex-column">
+          <p th:text="${event.description}"></p>
+          <p><span class="badge badge-date" th:text="${event.date}"></span></p>
+          <p><strong>Lieu :</strong> <span th:text="${event.lieu}"></span></p>
+
+          <div class="mt-auto">
+            <a th:href="@{'/etudiant/formulaire?eventId=' + ${event.id}}"
+               class="btn btn-emsivert w-100">
+              Je vais assister
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

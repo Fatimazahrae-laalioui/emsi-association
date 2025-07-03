@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Invitation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="container mt-5">
+<h1>Invitation</h1>
+<hr>
+<p><strong>Nom :</strong> <span th:text="${inscription.user.fullName}"></span></p>
+<p><strong>Message :</strong> <span th:text="${inscription.message}"></span></p>
+<p><strong>Status :</strong> <span th:text="${inscription.status}"></span></p>
+
+<button class="btn btn-primary mt-3" onclick="window.print()">Imprimer</button>
+</body>
+</html>

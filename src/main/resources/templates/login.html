@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Career Center EMSI Rabat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #2e8b57;  /* Vert EMSI principal */
+            --dark-green: #256c46;     /* Vert foncé */
+            --light-green: #e6f2ec;    /* Vert clair */
+            --hover-green: #3aa76d;    /* Vert survol */
+            --white: #ffffff;          /* Blanc */
+            --light-gray: #f8f9fa;     /* Gris clair */
+            --text-color: #333333;     /* Couleur texte */
+            --error-color: #dc3545;    /* Rouge erreur */
+        }
+
+        body {
+            background-color: var(--white); /* Fond blanc comme demandé */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(46, 139, 87, 0.15);
+            border-top: 4px solid var(--primary-green);
+            transition: transform 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h3 {
+            color: var(--primary-green);
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 0.25rem rgba(46, 139, 87, 0.15);
+            outline: none;
+        }
+
+        .btn-login {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        .btn-login:hover {
+            background-color: var(--hover-green);
+            transform: translateY(-2px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid var(--primary-green);
+            color: var(--primary-green);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6c757d;
+        }
+
+        .register-link a {
+            color: var(--primary-green);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: var(--hover-green);
+            text-decoration: underline;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .input-with-icon {
+            padding-left: 40px !important;
+        }
+
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+
+            body {
+                padding: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="login-header">
+        <h3>Connexion</h3>
+        <p>Accédez à votre espace Career Center EMSI</p>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${param.success}" class="alert alert-success">
+        <i class="fas fa-check-circle me-2"></i> Inscription réussie! Veuillez vous connecter.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label for="email" class="form-label">Adresse email</label>
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" class="form-control input-with-icon" id="email" name="email" placeholder="exemple@emsi.ma" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="form-label">Mot de passe</label>
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" class="form-control input-with-icon" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-login">
+            <i class="fas fa-sign-in-alt me-2"></i> Se connecter
+        </button>
+
+        <div class="register-link">
+            Pas encore inscrit ? <a href="/register">Créer un compte</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

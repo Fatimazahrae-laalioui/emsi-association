@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Forums</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f7f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      background-color: #006633;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .like-btn {
+      color: #006633;
+      cursor: pointer;
+    }
+
+    .like-btn:hover {
+      text-decoration: underline;
+    }
+
+    .admin-table th {
+      background-color: #006633;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Forums</h2>
+
+  <!-- Pour l'admin : tableau -->
+  <div th:if="${userRole == 'ADMIN'}">
+    <table class="table admin-table table-bordered">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="forum : ${forums}">
+        <td th:text="${forum.id}"></td>
+        <td th:text="${forum.titre}"></td>
+        <td th:text="${forum.auteur.fullName}"></td>
+        <td th:text="${#dates.format(forum.dateCreation, 'dd/MM/yyyy HH:mm')}"></td>
+        <td>
+          <form th:action="@{'/forums/delete/' + ${forum.id}}" method="post" style="display:inline">
+            <button class="btn btn-danger btn-sm" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pour les étudiants : cartes -->
+  <div th:if="${userRole == 'ETUDIANT'}">
+    <div th:each="forum : ${forums}" class="card">
+      <div class="card-header">
+        <span th:text="${forum.titre}">Titre</span>
+        <span class="float-end" th:text="${#dates.format(forum.dateCreation, 'dd MMM yyyy HH:mm')}"></span>
+      </div>
+      <div class="card-body">
+        <p th:text="${forum.contenu}"></p>
+        <p><strong>Auteur :</strong> <span th:text="${forum.auteur.fullName}">Nom Étudiant</span></p>
+
+        <!-- Répondre -->
+        <form th:action="@{'/forums/repondre/' + ${forum.id}}" method="post" class="mb-2">
+          <div class="mb-2">
+            <textarea name="reponse" class="form-control" rows="2" placeholder="Votre réponse..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success btn-sm">Répondre</button>
+        </form>
+
+        <!-- Bouton j'aime -->
+        <form th:action="@{'/forums/like/' + ${forum.id}}" method="post" style="display:inline">
+          <button type="submit" class="btn btn-outline-primary btn-sm">
+            ❤️ J'aime (<span th:text="${forum.likes}">0</span>)
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

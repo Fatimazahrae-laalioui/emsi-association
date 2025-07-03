@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Événements</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --emsi-green: #006633;
+            --emsi-yellow: #fdd835;
+            --emsi-gray-light: #f7f9fa;
+        }
+
+        body {
+            background-color: var(--emsi-gray-light);
+        }
+
+        .navbar {
+            background-color: var(--emsi-green);
+        }
+
+        .navbar .navbar-brand, .navbar .nav-link {
+            color: #fff !important;
+        }
+
+        .btn-emsi {
+            background-color: var(--emsi-green);
+            color: #fff;
+        }
+
+        .btn-emsi:hover {
+            background-color: #004d29;
+            color: #fff;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        footer {
+            background-color: var(--emsi-green);
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="/admin/dashboard">
+            EMSI-ONE
+        </a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <form action="/logout" method="post" class="ms-2 mb-0">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Deconnexion</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ✅ Main content -->
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold" style="color: var(--emsi-green);">Gestion des Événements</h1>
+        <a href="/admin/evenements/create" class="btn btn-emsi">Créer un événement</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(evenements)}">
+        <div class="alert alert-info">Aucun événement pour le moment.</div>
+    </div>
+
+    <div class="row" th:each="event : ${evenements}">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" th:text="${event.titre}">Titre</h5>
+                    <div>
+                        <a th:href="@{'/admin/evenements/edit/' + ${event.id}}" class="btn btn-warning btn-sm me-2">Modifier</a>
+                        <a th:href="@{'/admin/evenements/delete/' + ${event.id}}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">Supprimer</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- ✅ Affiche l'image si elle existe -->
+                    <img th:if="${event.imageFilename != null}"
+                         th:src="@{'/uploads/' + ${event.imageFilename}}"
+                         alt="Image de l'événement"
+                         class="img-fluid rounded mb-3"
+                         style="max-height:200px;">
+
+                    <!-- ✅ Infos de l'événement -->
+                    <p th:text="${event.description}">Description</p>
+                    <p><strong>Date :</strong> <span th:text="${event.date}"></span></p>
+                    <p><strong>Lieu :</strong> <span th:text="${event.lieu}"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 EMSI Rabat - Tous droits réservés
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

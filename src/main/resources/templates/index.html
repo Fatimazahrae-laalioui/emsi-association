@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Center EMSI Rabat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f6f9f8;
+            color: #1a1a1a;
+        }
+
+        header {
+            background-color: white;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .hero-section {
+            height: 90vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+            url('/images/img.png') center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 600;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-green {
+            background-color: #2e8b57;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-green:hover {
+            background-color: #246947;
+            transform: scale(1.05);
+        }
+
+        .event-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #2e8b57;
+        }
+
+        .event-row {
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .event-text {
+            text-align: left;
+        }
+
+        .value-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .value-box:hover {
+            transform: translateY(-5px);
+            background-color: #2e8b57;
+            color: white;
+        }
+
+        .value-box i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background-color: #246947;
+            padding: 30px 0;
+            color: white;
+            text-align: center;
+        }
+
+        footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<header style="background-color: #e6f4ec;">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <img src="/images/im111.png" alt="EMSI Logo">
+            </a>
+            <div>
+                <a th:href="@{/login}" class="btn btn-outline-success me-2">s'identifier</a>
+                <a th:href="@{/register}" class="btn btn-success">JOIN NOW</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <h1>Bienvenue au Career Center EMSI Rabat</h1>
+        <p>Une communauté d'étudiants dynamiques pour un avenir inspirant.</p>
+        <a th:href="@{/evenements}" class="btn btn-green">Voir les événements</a>
+    </div>
+</div>
+
+<!-- Section À propos de nous -->
+<section id="a-propos" class="py-5" style="background-color: #e6f4ec;">
+    <div class="container text-center">
+        <h2 class="mb-5 text-success">À propos de nous</h2>
+
+        <div class="row align-items-center mb-5">
+            <div class="col-md-4">
+                <img src="/images/img_11.png" class="event-image" alt="Image réseau 1">
+            </div>
+            <div class="col-md-8 text-md-start">
+                <h4 class="fw-semibold text-dark" style="font-size: 1.25rem;">
+                    Reprendre contact avec ses anciens camarades d’études
+                </h4>
+                <p class="text-secondary" style="font-size: 1.1rem;">
+                    EMSI Community vous permet non seulement de renouer avec vos anciens camarades, mais aussi de profiter d’un réseau professionnel fiable pour développer vos opportunités.
+                </p>
+            </div>
+        </div>
+
+        <div class="row align-items-center flex-md-row-reverse">
+            <div class="col-md-4">
+                <img src="/images/img_12.png" class="event-image" alt="Image réseau 2">
+            </div>
+            <div class="col-md-8 text-md-start">
+                <h4 class="fw-semibold text-dark" style="font-size: 1.25rem;">
+                    Un réseau professionnel solide
+                </h4>
+                <p class="text-secondary" style="font-size: 1.1rem;">
+                    Grâce à EMSI Community, bénéficiez d’un espace sécurisé où anciens élèves et entreprises peuvent échanger et collaborer efficacement.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Nos valeurs -->
+<section id="valeurs" class="py-5 text-center" style="background-color: #e6f4ec;">
+    <div class="container">
+        <h2 class="mb-5 text-success">Nos Valeurs</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="value-box">
+                    <i class="fas fa-lightbulb"></i>
+                    <h5>Innovation</h5>
+                    <p>Stimuler la créativité et adopter les nouvelles technologies.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-box">
+                    <i class="fas fa-users"></i>
+                    <h5>Communauté</h5>
+                    <p>Favoriser un esprit d’entraide entre étudiants, diplômés et entreprises.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="value-box">
+                    <i class="fas fa-globe"></i>
+                    <h5>Ouverture</h5>
+                    <p>S’ouvrir à de nouveaux horizons pour une carrière internationale et enrichissante.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section Commentaires -->
+<!-- Section Commentaires Accueil -->
+<section id="commentaires">
+    <div>
+        <div th:if="${session.user != null}">
+            <form th:action="@{/etudiant/commentaire-page}" method="post">
+                <textarea name="contenu" required></textarea>
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+        <div th:unless="${session.user != null}">
+            <p>Veuillez vous <a th:href="@{/login(redirect='/?scroll=commentaires')}">identifier</a> pour commenter.</p>
+        </div>
+    </div>
+</section>
+
+
+<footer>
+    <p>&copy; 2025 Career Center EMSI Rabat. Tous droits réservés.</p>
+    <div>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
